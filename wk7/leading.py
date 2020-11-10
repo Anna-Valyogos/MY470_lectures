@@ -1,6 +1,6 @@
 # Test tool for the leading_substrings function
 
-print('This will always run')
+print('This will always run, because it comes before main.')
 
 def main():
     pass
