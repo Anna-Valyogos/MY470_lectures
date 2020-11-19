@@ -11,14 +11,16 @@ In this document we will study vectorised code and the substantial speedups it c
 
 ```{r}
 
+# install.packages("pryr")
+
 # This code creates a vector `vector_of_squares` which contains the squared
 # elements of the vector x
 
 # Loading the relevant package to use the `address()` function
-library(____)
+library("pryr")
 
 # Creating an exemplary vector with 10 elements
-x <- ____
+x <- 1:10
 
 # Creating an empty vector with correct final length
 vector_of_squares <- numeric(length(x))
@@ -26,7 +28,7 @@ vector_of_squares <- numeric(length(x))
 for (i in 1:length(x)) {
   
   # Replacing the relevant element of the empty vector with the associated square
-  vector_of_squares[i] <- x[i]*x[____]
+  vector_of_squares[i] <- x[i]*x[i]
   
   # Printing out the memory address of the vector
   print(address(vector_of_squares))
@@ -46,7 +48,7 @@ vector_of_squares <- numeric(0)
 for (i in 1:length(x)) {
   
   # Appending every new element to the vector which implicitly creates a copy
-  vector_of_squares <- append(____, x[i]*x[____])
+  vector_of_squares <- append(vector_of_squares, x[i]*x[i])
   
   # Printing out the memory address of the vector
   print(address(vector_of_squares))
@@ -88,7 +90,7 @@ vector_length_a <- function(x) {
   #
   
   # Creating an empty vector with correct final length
-  vector_of_squares <- numeric(length(____))
+  vector_of_squares <- numeric(length(x))
   
   # Filling out the vector
   for (i in 1:length(x)) {
@@ -98,10 +100,10 @@ vector_length_a <- function(x) {
   }
   
   # Obtaining the dot product
-  dot_product <- sum(____)
+  dot_product <- sum(vector_of_squares)
   
   # Obtaining the final vector length
-  vector_length <- sqrt(____)
+  vector_length <- sqrt(dot_product)
   
   return(vector_length)
   
@@ -121,15 +123,15 @@ vector_length_b <- function(x) {
   # Filling out the vector
   for (i in 1:length(x)) {
     
-    ____ <- append(____, x[i]*x[i])
+    vector_of_squares <- append(vector_of_squares, x[i]*x[i])
     
   }
   
   # Obtaining the dot product
-  dot_product <- sum(____)
+  dot_product <- sum(vector_of_squares)
   
   # Obtaining the final vector length
-  vector_length <- sqrt(____)
+  vector_length <- sqrt(dot_product)
   
   return(vector_length)
   
@@ -145,13 +147,13 @@ vector_length_c <- function(x) {
   #
   
   # Using sapply and an anonymous function to compute the vector of squares
-  vector_of_squares <- sapply(x, ____)
+  vector_of_squares <- sapply(x, function(k) k^2)
   
   # Obtaining the dot product
-  dot_product <- sum(____)
+  dot_product <- sum(vector_of_squares)
   
   # Obtaining the final vector length
-  vector_length <- sqrt(____)
+  vector_length <- sqrt(dot_product)
   
   return(vector_length)
 
@@ -163,7 +165,7 @@ vector_length_d <- function(x) {
   # This function uses the operator for matrix multiplication in R
   #
   
-  dot_product <- x____x
+  dot_product <- x%*%x
   vector_length <- sqrt(dot_product[1,1])
   
   return(vector_length)
@@ -176,7 +178,7 @@ vector_length_e <- function(x) {
   # This function uses element wise multiplication
   #
   
-  dot_product <- sum(x____x)
+  dot_product <- sum(x*x)
   vector_length <- sqrt(dot_product)
   
   return(vector_length)
@@ -189,7 +191,7 @@ Check whether all functions return the same outcome:
 
 ```{r}
 
-some_example_vector <- ____
+some_example_vector <- c(1,8,23,30)
 
 vector_length_a(some_example_vector)
 vector_length_b(some_example_vector)
